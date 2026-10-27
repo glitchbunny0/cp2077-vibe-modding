@@ -1,0 +1,315 @@
+# Upstream sources this project studies. `tools/fetch_refs.py` clones or mirrors
+# every entry into refs/ (gitignored) and records the resolved commits in
+# refs.lock.json. Nothing in refs/ is ours: it is never committed, built or run
+# without a source review first (see AGENTS.md).
+#
+# Pins: release tags that support game patch 2.5 (3.0.88.46235) where one
+# exists; a branch where the project has no releases. The lock file holds the
+# exact commit either way.
+#
+# Groups: core, plugins, bridges, examples, game, docs, heavy.
+# `fetch_refs.py sync` takes every group except `heavy`; add `--with-heavy`.
+
+# --- core: the frameworks nearly every mod stands on ------------------------
+
+[[git]]
+name = "cet"
+url = "https://github.com/maximegmd/CyberEngineTweaks"
+ref = "v1.38.1"
+group = "core"
+layer = "Lua runtime"
+note = "Cyber Engine Tweaks: Lua over the game's scripting RTTI, Observe/Override hooks, console, TweakDB editor, ImGui overlay. 1.38.0 is the first 2.5 build."
+
+[[git]]
+name = "red4ext"
+url = "https://github.com/wopss/RED4ext"
+ref = "v1.31.0"
+group = "core"
+layer = "native loader"
+note = "Native plugin loader (winmm.dll proxy). Everything below CET/redscript that ships a DLL needs it."
+
+[[git]]
+name = "red4ext-sdk"
+url = "https://github.com/wopss/RED4ext.SDK"
+ref = "master"
+group = "core"
+layer = "native SDK"
+note = "Header-only SDK with generated RTTI type layouts (the REDengine counterpart of a Dumper-7 SDK). Last tagged release predates 2.5, so tracked on master."
+
+[[git]]
+name = "redscript"
+url = "https://github.com/jac3km4/redscript"
+ref = "v0.5.32"
+group = "core"
+layer = "script compiler"
+note = "Compiler, decompiler and disassembler for the game's script language. 0.5.32 is the 2.5 release; the default branch 1.0.x is the next-generation compiler (prereleases only)."
+
+[[git]]
+name = "redscript-ide"
+url = "https://github.com/jac3km4/redscript-ide"
+ref = "v0.2.25"
+group = "core"
+layer = "script tooling"
+note = "Language server for redscript: diagnostics and navigation without the game."
+
+[[git]]
+name = "redscript-dap"
+url = "https://github.com/jac3km4/redscript-dap"
+ref = "v0.0.8"
+group = "core"
+layer = "script tooling"
+note = "Debug adapter: breakpoints and stepping in game scripts of a running game. Last release 2025-08, unverified against 2.5."
+
+[[git]]
+name = "tweakxl"
+url = "https://github.com/psiberx/cp2077-tweak-xl"
+ref = "v1.12.0"
+group = "core"
+layer = "data"
+note = "Loads TweakDB edits (YAML/.tweak) from mods without overwriting each other."
+
+[[git]]
+name = "archivexl"
+url = "https://github.com/psiberx/cp2077-archive-xl"
+ref = "v1.28.1"
+group = "core"
+layer = "assets"
+note = "Loads new items, appearances and world edits from .archive mods."
+
+[[git]]
+name = "codeware"
+url = "https://github.com/psiberx/cp2077-codeware"
+ref = "v1.21.1"
+group = "core"
+layer = "script library"
+note = "Native library that widens what redscript and CET can reach (reflection, entities, UI, events)."
+
+[[git]]
+name = "red-hot-tools"
+url = "https://github.com/psiberx/cp2077-red-hot-tools"
+ref = "v1.3.0-rc.3"
+group = "core"
+layer = "dev loop"
+note = "Hot reload of scripts, tweaks and archives; world/entity/UI inspector. RC3 shipped two days before patch 2.5, so 2.5 support is unconfirmed."
+
+[[git]]
+name = "red-cli"
+url = "https://github.com/rayshader/cp2077-red-cli"
+ref = "v0.5.1"
+group = "core"
+layer = "dev loop"
+note = "Bundles and installs redscript/CET mods from a project folder (red.config.json)."
+
+# --- plugins: native plugins useful to an agent ------------------------------
+
+[[git]]
+name = "red-socket"
+url = "https://github.com/rayshader/cp2077-red-socket"
+ref = "v0.5.0"
+group = "plugins"
+layer = "transport"
+note = "TCP client for redscript and CET; the fast transport of the CET MCP bridge. Last release 2025-09 (patch 2.31)."
+
+[[git]]
+name = "red-filesystem"
+url = "https://github.com/rayshader/cp2077-red-filesystem"
+ref = "v0.16.0"
+group = "plugins"
+layer = "transport"
+note = "Sandboxed file access for redscript and CET mods."
+
+[[git]]
+name = "red-memorydump"
+url = "https://github.com/rayshader/cp2077-red-memorydump"
+ref = "v0.9.1"
+group = "plugins"
+layer = "reverse engineering"
+note = "Captures and diffs memory of a live object to reverse engineer unknown types."
+
+[[git]]
+name = "rtti-dumper"
+url = "https://github.com/wopss/RED4.RTTIDumper"
+ref = "master"
+group = "plugins"
+layer = "reverse engineering"
+note = "RED4ext plugin that dumps the scripting RTTI; produces the data behind NativeDB and the SDK headers."
+
+[[git]]
+name = "nativedb"
+url = "https://github.com/rayshader/cp2077-nativedb"
+ref = "master"
+group = "plugins"
+layer = "reference"
+note = "NativeDB web app (nativedb.red4ext.com) including the RTTI dump it renders."
+
+[[git]]
+name = "red-lib"
+url = "https://github.com/psiberx/cp2077-red-lib"
+ref = "master"
+group = "plugins"
+layer = "native SDK"
+note = "Header library for RED4ext plugins (RTTI registration helpers, used by psiberx's plugins)."
+
+# --- bridges: existing agent/MCP bridges (prior art) -------------------------
+
+[[git]]
+name = "cet-mcp"
+url = "https://github.com/Y4rd13/cyber-engine-tweak-mcp"
+ref = "main"
+group = "bridges"
+layer = "agent bridge"
+note = "MCP server + CETBridge Lua mod: execute Lua, game state, TweakDB, observe events. TCP via RedSocket or file IPC. 3 stars, last push 2026-03."
+
+[[git]]
+name = "wolvenkit-mcp"
+url = "https://github.com/Y4rd13/wolvenkit-mcp"
+ref = "main"
+group = "bridges"
+layer = "agent bridge"
+note = "Same author's MCP server over the WolvenKit CLI (archives and assets)."
+
+[[git]]
+name = "wkmcp"
+url = "https://github.com/Guikingone/WkMCP"
+ref = "v2.1.0"
+group = "bridges"
+layer = "agent bridge"
+note = "MCP server on WolvenKit libraries (128 tools: archives, CR2W<->JSON, TweakDB, redscript/TweakXL lint) plus a CETBridge fork for live tools. Windows only."
+
+# --- examples and typedefs ---------------------------------------------------
+
+[[git]]
+name = "cet-kit"
+url = "https://github.com/psiberx/cp2077-cet-kit"
+ref = "main"
+group = "examples"
+layer = "Lua runtime"
+note = "CET helper modules: game-state tracking, timers, per-save storage."
+
+[[git]]
+name = "cet-examples"
+url = "https://github.com/WolvenKit/cet-examples"
+ref = "main"
+group = "examples"
+layer = "Lua runtime"
+note = "Official small CET example mods (NPC AI, map pins, input). Last push 2021: old API spellings in places."
+
+[[git]]
+name = "native-settings"
+url = "https://github.com/justarandomguyintheinternet/CP77_nativeSettings"
+ref = "main"
+group = "examples"
+layer = "Lua runtime"
+note = "Native Settings UI framework for CET mods."
+
+[[git]]
+name = "imgui-typedefs"
+url = "https://github.com/Nats-ji/CET_ImGui_lua_type_defines"
+ref = "main"
+group = "examples"
+layer = "Lua runtime"
+note = "LuaLS type definitions for CET's ImGui binding. The CET/game typedefs themselves are only on Discord and stop at patch 2.01."
+
+# --- game: CDPR's own script and tweak sources (from REDmod) -----------------
+# Game content. Study locally only: never commit, publish or ship any of it.
+
+[[git]]
+name = "game-scripts"
+url = "https://github.com/CDPR-Modding-Documentation/Cyberpunk-Scripts"
+ref = "main"
+group = "game"
+layer = "game source"
+note = "The game's .script sources as REDmod ships them, patch 2.31. For 2.5, take tools/redmod from the updated install or decompile r6/cache/final.redscripts."
+
+[[git]]
+name = "game-tweaks"
+url = "https://github.com/CDPR-Modding-Documentation/Cyberpunk-Tweaks"
+ref = "main"
+group = "game"
+layer = "game source"
+note = "The game's .tweak sources (TweakDB records) as REDmod ships them, patch 2.31."
+
+# --- heavy: opt-in (--with-heavy) --------------------------------------------
+
+[[git]]
+name = "wolvenkit"
+url = "https://github.com/WolvenKit/WolvenKit"
+ref = "9.1.0"
+group = "heavy"
+layer = "assets"
+note = "WolvenKit editor and CLI (GPL-3.0, .NET 8). The CLI does not run on Linux; asset work happens on the Windows box."
+
+# --- docs: wikis as markdown ---------------------------------------------------
+# GitBook spaces publish llms.txt plus a .md copy of every page.
+
+[[gitbook]]
+name = "wiki-modding"
+base = "https://wiki.redmodding.org/cyberpunk-2077-modding"
+group = "docs"
+note = "Main Cyberpunk 2077 modding wiki: file formats, WolvenKit workflows, ArchiveXL/TweakXL guides, references."
+
+[[gitbook]]
+name = "wiki-scripting"
+base = "https://wiki.redmodding.org/scripting-cyberpunk"
+group = "docs"
+note = "Scripting Cyberpunk: CET, redscript, Codeware and their APIs. Replaces the deprecated Redscript and CET wikis."
+
+[[gitbook]]
+name = "wiki-wolvenkit"
+base = "https://wiki.redmodding.org/wolvenkit"
+group = "docs"
+note = "WolvenKit editor and CLI manual."
+
+[[gitbook]]
+name = "docs-red4ext"
+base = "https://docs.red4ext.com"
+group = "docs"
+note = "RED4ext install, configuration and plugin development."
+
+[[git]]
+name = "wiki-nativedb"
+url = "https://github.com/CDPR-Modding-Documentation/NativeDB-wiki"
+ref = "main"
+group = "docs"
+layer = "reference"
+note = "Hand-written usage notes NativeDB shows next to classes and globals."
+
+[[git]]
+name = "wiki-cet"
+url = "https://github.com/maximegmd/CyberEngineTweaks.wiki.git"
+ref = "master"
+group = "docs"
+layer = "Lua runtime"
+note = "CET's GitHub wiki."
+
+[[git]]
+name = "wiki-redscript"
+url = "https://github.com/jac3km4/redscript.wiki.git"
+ref = "master"
+group = "docs"
+layer = "script compiler"
+note = "redscript's GitHub wiki (language reference, intrinsics)."
+
+[[git]]
+name = "wiki-tweakxl"
+url = "https://github.com/psiberx/cp2077-tweak-xl.wiki.git"
+ref = "master"
+group = "docs"
+layer = "data"
+note = "TweakXL wiki: YAML tweak format, instances, scripting API."
+
+[[git]]
+name = "wiki-archivexl"
+url = "https://github.com/psiberx/cp2077-archive-xl.wiki.git"
+ref = "master"
+group = "docs"
+layer = "assets"
+note = "ArchiveXL wiki: .xl manifests, resource patching, dynamic appearances."
+
+[[git]]
+name = "wiki-codeware"
+url = "https://github.com/psiberx/cp2077-codeware.wiki.git"
+ref = "master"
+group = "docs"
+layer = "script library"
+note = "Codeware wiki: reflection, entity, UI and event APIs."

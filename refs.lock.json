@@ -1,0 +1,335 @@
+{
+  "archivexl": {
+    "kind": "git",
+    "url": "https://github.com/psiberx/cp2077-archive-xl",
+    "ref": "v1.28.1",
+    "commit": "0984aa1c94df3c090ffe8eee6f549e1d4d466136",
+    "commit_date": "2026-10-25T11:04:59+03:00",
+    "fetched_at": "2026-10-27T20:25:20+00:00",
+    "bytes": 3465628
+  },
+  "cet": {
+    "kind": "git",
+    "url": "https://github.com/maximegmd/CyberEngineTweaks",
+    "ref": "v1.38.1",
+    "commit": "213151fa22c79182922a08a44e4a44d44739d1cd",
+    "commit_date": "2026-10-26T01:11:23+01:00",
+    "fetched_at": "2026-10-27T20:25:13+00:00",
+    "bytes": 51579081
+  },
+  "cet-examples": {
+    "kind": "git",
+    "url": "https://github.com/WolvenKit/cet-examples",
+    "ref": "main",
+    "commit": "3d0e7ab03f885db6764872a261241f84d8572787",
+    "commit_date": "2021-08-19T21:16:45+03:00",
+    "fetched_at": "2026-10-27T20:25:50+00:00",
+    "bytes": 94763
+  },
+  "cet-kit": {
+    "kind": "git",
+    "url": "https://github.com/psiberx/cp2077-cet-kit",
+    "ref": "main",
+    "commit": "f64c837e589ffffc030e79ed0123688eb3091098",
+    "commit_date": "2025-01-29T11:19:42+03:00",
+    "fetched_at": "2026-10-27T20:25:50+00:00",
+    "bytes": 433733
+  },
+  "cet-mcp": {
+    "kind": "git",
+    "url": "https://github.com/Y4rd13/cyber-engine-tweak-mcp",
+    "ref": "main",
+    "commit": "4893237b5d181c7d1e0bd8638035a56b1bf607fc",
+    "commit_date": "2026-03-26T19:36:56-03:00",
+    "fetched_at": "2026-10-27T20:25:47+00:00",
+    "bytes": 301352
+  },
+  "codeware": {
+    "kind": "git",
+    "url": "https://github.com/psiberx/cp2077-codeware",
+    "ref": "v1.21.1",
+    "commit": "b56f0f66749a7a54ffa4d1a6c403ddc655a37ca7",
+    "commit_date": "2026-10-25T23:55:25+03:00",
+    "fetched_at": "2026-10-27T20:25:22+00:00",
+    "bytes": 18488342
+  },
+  "docs-red4ext": {
+    "kind": "gitbook",
+    "base": "https://docs.red4ext.com",
+    "pages": 14,
+    "failed": [],
+    "content_sha256": "e2fa4746c5329eb6585d646667a592e693ae41eede28b218698d24539e1bd9f8",
+    "fetched_at": "2026-10-27T20:28:15+00:00",
+    "bytes": 36486
+  },
+  "game-scripts": {
+    "kind": "git",
+    "url": "https://github.com/CDPR-Modding-Documentation/Cyberpunk-Scripts",
+    "ref": "main",
+    "commit": "cfcf5071e5363962a44c33cb7cab749688b0ca51",
+    "commit_date": "2026-10-24T09:55:30+02:00",
+    "fetched_at": "2026-10-27T20:25:54+00:00",
+    "bytes": 24324388
+  },
+  "game-tweaks": {
+    "kind": "git",
+    "url": "https://github.com/CDPR-Modding-Documentation/Cyberpunk-Tweaks",
+    "ref": "main",
+    "commit": "09a0a119c9614a76aecf71200b70913e79c4d574",
+    "commit_date": "2026-10-24T09:57:56+02:00",
+    "fetched_at": "2026-10-27T20:26:01+00:00",
+    "bytes": 30876629
+  },
+  "imgui-typedefs": {
+    "kind": "git",
+    "url": "https://github.com/Nats-ji/CET_ImGui_lua_type_defines",
+    "ref": "main",
+    "commit": "cdf10929ad08a8055c2b430cf41b5f927937d6fc",
+    "commit_date": "2026-01-03T00:13:22+08:00",
+    "fetched_at": "2026-10-27T20:25:52+00:00",
+    "bytes": 952120
+  },
+  "native-settings": {
+    "kind": "git",
+    "url": "https://github.com/justarandomguyintheinternet/CP77_nativeSettings",
+    "ref": "main",
+    "commit": "4065b51456f5e3df8f29e1dc3c07edcc294e68e9",
+    "commit_date": "2026-10-22T17:23:02+02:00",
+    "fetched_at": "2026-10-27T20:25:51+00:00",
+    "bytes": 170632
+  },
+  "nativedb": {
+    "kind": "git",
+    "url": "https://github.com/rayshader/cp2077-nativedb",
+    "ref": "master",
+    "commit": "8d418f04128ce43a4f70a47689895bb0e7ecda7b",
+    "commit_date": "2026-10-25T23:53:31+01:00",
+    "fetched_at": "2026-10-27T20:25:46+00:00",
+    "bytes": 67232944
+  },
+  "red-cli": {
+    "kind": "git",
+    "url": "https://github.com/rayshader/cp2077-red-cli",
+    "ref": "v0.5.1",
+    "commit": "462954629a166e320da3021d26061af594ad5b53",
+    "commit_date": "2026-10-25T14:56:50+01:00",
+    "fetched_at": "2026-10-27T20:25:24+00:00",
+    "bytes": 181198
+  },
+  "red-filesystem": {
+    "kind": "git",
+    "url": "https://github.com/rayshader/cp2077-red-filesystem",
+    "ref": "v0.16.0",
+    "commit": "ffa2104bc975a6a3a8eb6f1204d60db5b5d9aa02",
+    "commit_date": "2026-10-23T18:19:59+02:00",
+    "fetched_at": "2026-10-27T20:25:26+00:00",
+    "bytes": 223254
+  },
+  "red-hot-tools": {
+    "kind": "git",
+    "url": "https://github.com/psiberx/cp2077-red-hot-tools",
+    "ref": "v1.3.0-rc.3",
+    "commit": "de93c5696f8342edf6086c44d400774e6c1c3c2b",
+    "commit_date": "2026-10-20T10:57:27+03:00",
+    "fetched_at": "2026-10-27T20:25:23+00:00",
+    "bytes": 18592053
+  },
+  "red-lib": {
+    "kind": "git",
+    "url": "https://github.com/psiberx/cp2077-red-lib",
+    "ref": "master",
+    "commit": "398a7104a5aa60765db7221ddcaa48c6686d12ae",
+    "commit_date": "2026-10-25T01:34:16+03:00",
+    "fetched_at": "2026-10-27T20:28:21+00:00",
+    "bytes": 245700
+  },
+  "red-memorydump": {
+    "kind": "git",
+    "url": "https://github.com/rayshader/cp2077-red-memorydump",
+    "ref": "v0.9.1",
+    "commit": "19d35c90c6b4006aead956a120d3824400115f6a",
+    "commit_date": "2025-11-20T17:40:01+01:00",
+    "fetched_at": "2026-10-27T20:25:28+00:00",
+    "bytes": 2444449
+  },
+  "red-socket": {
+    "kind": "git",
+    "url": "https://github.com/rayshader/cp2077-red-socket",
+    "ref": "v0.5.0",
+    "commit": "055420a7317cb6e318251ed168eefad10fb1ea5b",
+    "commit_date": "2025-09-11T22:17:29+02:00",
+    "fetched_at": "2026-10-27T20:25:25+00:00",
+    "bytes": 1486675
+  },
+  "red4ext": {
+    "kind": "git",
+    "url": "https://github.com/wopss/RED4ext",
+    "ref": "v1.31.0",
+    "commit": "9f135ac339b00c55a68d06ce7106e960dd82962a",
+    "commit_date": "2026-10-24T20:08:36+03:00",
+    "fetched_at": "2026-10-27T20:25:13+00:00",
+    "bytes": 450703
+  },
+  "red4ext-sdk": {
+    "kind": "git",
+    "url": "https://github.com/wopss/RED4ext.SDK",
+    "ref": "master",
+    "commit": "5246e659d783e5834cc08a90e56c8932c9ed3449",
+    "commit_date": "2026-10-24T20:49:51+03:00",
+    "fetched_at": "2026-10-27T20:25:15+00:00",
+    "bytes": 13763975
+  },
+  "redscript": {
+    "kind": "git",
+    "url": "https://github.com/jac3km4/redscript",
+    "ref": "v0.5.32",
+    "commit": "f73003ac55fe41c10a9eecd61352343a3741ddd5",
+    "commit_date": "2026-10-22T19:19:29+01:00",
+    "fetched_at": "2026-10-27T20:25:17+00:00",
+    "bytes": 811342
+  },
+  "redscript-dap": {
+    "kind": "git",
+    "url": "https://github.com/jac3km4/redscript-dap",
+    "ref": "v0.0.8",
+    "commit": "3f5b4202baeade86345df6f0449f555897d5b22f",
+    "commit_date": "2025-08-27T21:35:43+01:00",
+    "fetched_at": "2026-10-27T20:25:18+00:00",
+    "bytes": 109096
+  },
+  "redscript-ide": {
+    "kind": "git",
+    "url": "https://github.com/jac3km4/redscript-ide",
+    "ref": "v0.2.25",
+    "commit": "b37a3dc40f439eadf12bfc00d4420025fac50800",
+    "commit_date": "2025-09-07T20:36:00+01:00",
+    "fetched_at": "2026-10-27T20:25:17+00:00",
+    "bytes": 168053
+  },
+  "rtti-dumper": {
+    "kind": "git",
+    "url": "https://github.com/wopss/RED4.RTTIDumper",
+    "ref": "master",
+    "commit": "415af745120e104a6cadf44d1ce19f2117c48a19",
+    "commit_date": "2026-06-25T12:29:06+03:00",
+    "fetched_at": "2026-10-27T20:25:29+00:00",
+    "bytes": 136112
+  },
+  "tweakxl": {
+    "kind": "git",
+    "url": "https://github.com/psiberx/cp2077-tweak-xl",
+    "ref": "v1.12.0",
+    "commit": "0d13bb9057a0c70b35292c0d8a3c2076e2b6827a",
+    "commit_date": "2026-10-25T01:09:52+03:00",
+    "fetched_at": "2026-10-27T20:25:19+00:00",
+    "bytes": 5269706
+  },
+  "wiki-archivexl": {
+    "kind": "git",
+    "url": "https://github.com/psiberx/cp2077-archive-xl.wiki.git",
+    "ref": "master",
+    "commit": "b13163615d321570e4e81ba530e6d9eefbb51a56",
+    "commit_date": "2025-08-31T14:47:58+03:00",
+    "fetched_at": "2026-10-27T20:26:06+00:00",
+    "bytes": 47260
+  },
+  "wiki-cet": {
+    "kind": "git",
+    "url": "https://github.com/maximegmd/CyberEngineTweaks.wiki.git",
+    "ref": "master",
+    "commit": "8185c33f73b7fab8485b358544aa2ac8910584d6",
+    "commit_date": "2020-12-22T13:14:12+01:00",
+    "fetched_at": "2026-10-27T20:26:03+00:00",
+    "bytes": 44808
+  },
+  "wiki-codeware": {
+    "kind": "git",
+    "url": "https://github.com/psiberx/cp2077-codeware.wiki.git",
+    "ref": "master",
+    "commit": "0475d902c26efb21f4d602d1d3d91209db2ae8a1",
+    "commit_date": "2026-03-21T11:46:15Z",
+    "fetched_at": "2026-10-27T20:26:07+00:00",
+    "bytes": 90451
+  },
+  "wiki-modding": {
+    "kind": "gitbook",
+    "base": "https://wiki.redmodding.org/cyberpunk-2077-modding",
+    "pages": 536,
+    "failed": [],
+    "content_sha256": "1da1c48f3402a1e915ee1091d0308be595340030694165fd25ef02fd1f2761af",
+    "fetched_at": "2026-10-27T20:27:40+00:00",
+    "bytes": 6385647
+  },
+  "wiki-nativedb": {
+    "kind": "git",
+    "url": "https://github.com/CDPR-Modding-Documentation/NativeDB-wiki",
+    "ref": "main",
+    "commit": "ed4e34def19277b5eb814f1d877a3a80cf3a2b8c",
+    "commit_date": "2025-09-08T20:16:15Z",
+    "fetched_at": "2026-10-27T20:26:02+00:00",
+    "bytes": 1300580
+  },
+  "wiki-redscript": {
+    "kind": "git",
+    "url": "https://github.com/jac3km4/redscript.wiki.git",
+    "ref": "master",
+    "commit": "eaea248770bd62eda57f80e16e31db1968f14b8f",
+    "commit_date": "2021-12-11T20:08:45Z",
+    "fetched_at": "2026-10-27T20:26:04+00:00",
+    "bytes": 43807
+  },
+  "wiki-scripting": {
+    "kind": "gitbook",
+    "base": "https://wiki.redmodding.org/scripting-cyberpunk",
+    "pages": 154,
+    "failed": [],
+    "content_sha256": "6fc23c69f9814c3162eb571c3e6cf65d2fefe8d1f6f868ab39d0c0201615946b",
+    "fetched_at": "2026-10-27T20:31:11+00:00",
+    "bytes": 562048
+  },
+  "wiki-tweakxl": {
+    "kind": "git",
+    "url": "https://github.com/psiberx/cp2077-tweak-xl.wiki.git",
+    "ref": "master",
+    "commit": "834930683bda2cc472ed466657489734c5c71b19",
+    "commit_date": "2025-07-30T14:54:32+03:00",
+    "fetched_at": "2026-10-27T20:26:05+00:00",
+    "bytes": 77197
+  },
+  "wiki-wolvenkit": {
+    "kind": "gitbook",
+    "base": "https://wiki.redmodding.org/wolvenkit",
+    "pages": 83,
+    "failed": [],
+    "content_sha256": "a5287671cf8fd262cabe813303c0c2a46ea600451cf6626a486a6cda2ec1d64f",
+    "fetched_at": "2026-10-27T20:28:13+00:00",
+    "bytes": 461846
+  },
+  "wkmcp": {
+    "kind": "git",
+    "url": "https://github.com/Guikingone/WkMCP",
+    "ref": "v2.1.0",
+    "commit": "6f6be2fb74f3c4786fc49c205af4104e32ae27c2",
+    "commit_date": "2026-06-30T21:01:56+02:00",
+    "fetched_at": "2026-10-27T20:25:49+00:00",
+    "bytes": 1936936
+  },
+  "wolvenkit": {
+    "kind": "git",
+    "url": "https://github.com/WolvenKit/WolvenKit",
+    "ref": "9.1.0",
+    "commit": "4d1716b1755dcadead2815b3ec356fa61f30861c",
+    "commit_date": "2026-10-10T08:56:33+02:00",
+    "fetched_at": "2026-10-27T20:28:52+00:00",
+    "bytes": 254647175
+  },
+  "wolvenkit-mcp": {
+    "kind": "git",
+    "url": "https://github.com/Y4rd13/wolvenkit-mcp",
+    "ref": "main",
+    "commit": "39429a7036ad1deb7b6dcc18738a1f3b4bc90178",
+    "commit_date": "2026-03-20T23:25:39-03:00",
+    "fetched_at": "2026-10-27T20:25:48+00:00",
+    "bytes": 195297
+  }
+}
