@@ -54,7 +54,7 @@ CET's Lua is not a security boundary: mods can write any file (`io.output`) and 
 (`db:load_extension`). A bridge that executes Lua it receives is remote native code execution, so
 its transport has to be local-only and authenticated. Details in `docs/reviews.md`.
 
-Existing bridges, all prior art rather than dependencies:
+Existing bridges, prior art for ours:
 
 - **cet-mcp** (Y4rd13, MIT, 3 stars, last push 2026-03): a TypeScript MCP server plus the
   `CETBridge` Lua mod. The mod polls one `command.json` in its own folder every frame, runs
@@ -66,6 +66,14 @@ Existing bridges, all prior art rather than dependencies:
   libraries (archives, CR2W/JSON, TweakDB, redscript and TweakXL linting, mod diagnostics) plus a
   fork of CETBridge for live tools. Windows only, built against WolvenKit 8.18.
 - **wolvenkit-mcp** (Y4rd13): TypeScript MCP server over the WolvenKit CLI.
+
+**Ours: `uvmod` with `UVMOD_CET`** (unreal-vibe-modding, branch `cet`). A CET build of VibeBridge
+answers uvmod's LuaRepl protocol from `mods/VibeBridge/LuaRepl`, so the Unreal tooling's SSH
+transport, crash triage, journal and MCP server carry over; CETBridge's 34 game handlers ride
+along unmodified (WkMCP's fixed copy, reviewed in `docs/reviews.md`) behind `uvmod cet` and the
+MCP tool `cet`. Live on 2.5: about 0.9 s per call over SSH. CET gives mods no debug library, so
+a request cannot be interrupted; screenshots copy the game window and refuse while another
+window is in front.
 
 ## Static knowledge an agent can mine offline
 

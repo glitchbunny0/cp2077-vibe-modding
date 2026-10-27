@@ -5,15 +5,20 @@
 #
 # The record lists every file written (with sha256), every directory created and every file that
 # was overwritten (backed up beside the record), so -Uninstall restores the game folder exactly.
-# Refuses while the game or its launcher is running.
+# Refuses while the game or its launcher is running, unless -AllowRunning (only for stages of
+# CET Lua mods, which CET reads when mods are (re)loaded, never for DLLs or archives).
 param(
     [string]$Stage,
     [Parameter(Mandatory)][string]$Game,
     [Parameter(Mandatory)][string]$Record,
-    [switch]$Uninstall
+    [switch]$Uninstall,
+    [switch]$AllowRunning
 )
 $ErrorActionPreference = 'Stop'
-if (Get-Process | Where-Object { $_.ProcessName -match '^(Cyberpunk2077|REDprelauncher)$' }) {
+if ($AllowRunning -and $Stage -and (Get-ChildItem -Recurse -File $Stage | Where-Object { $_.Extension -notin '.lua', '.json', '.md' })) {
+    'REFUSED: -AllowRunning is only for Lua mod stages'; exit 1
+}
+if (-not $AllowRunning -and (Get-Process | Where-Object { $_.ProcessName -match '^(Cyberpunk2077|REDprelauncher)$' })) {
     'REFUSED: the game or its launcher is running'; exit 1
 }
 $Game = (Resolve-Path $Game).Path

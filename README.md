@@ -1,12 +1,14 @@
 # cp2077-vibe-modding
 
 Agent-driven modding for Cyberpunk 2077: the upstream tools and documentation an agent needs,
-pinned and mirrored locally, and (next) a bridge that lets an agent read and drive a running game
+pinned and mirrored locally, and the bridge that lets an agent read and drive a running game
 the way `unreal-vibe-modding` does for Unreal titles.
 
 **Status:** sources and docs gathered and indexed, source reviews recorded, Windows build
 toolchain installed. CET v1.38.1 and its ASI loader, built here from reviewed source, load on
-patch 2.5 (game version 3.0.88.46235). No agent bridge yet.
+patch 2.5 (game version 3.0.88.46235). The agent tool is `uvmod` from `unreal-vibe-modding`
+(branch `cet`) with `UVMOD_CET` set: Lua in the running game, CETBridge's game handlers,
+screenshots, CLI and MCP, live on 2.5.
 
 ## Layout
 
