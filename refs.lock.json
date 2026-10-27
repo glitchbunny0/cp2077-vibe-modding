@@ -14,6 +14,22 @@
       "vendor/wil": "5bb5fbddf4b9c8e602c2da690f342839ad54084a"
     }
   },
+  "asi-loader": {
+    "kind": "git",
+    "url": "https://github.com/maximegmd/Ultimate-ASI-Loader",
+    "ref": "dc37f026f1e37ad364c3ee89ef57169ffaec8bb6",
+    "commit": "dc37f026f1e37ad364c3ee89ef57169ffaec8bb6",
+    "commit_date": "2024-04-04T20:34:54+02:00",
+    "fetched_at": "2026-10-27T21:06:08+00:00",
+    "bytes": 100402861,
+    "submodules": {
+      "external/MemoryModule": "5f83e41c3a3e7c6e8284a5c1afa5a38790809461",
+      "external/d3d8to9": "1bcbeca40beb9756d21872300a75174dd01cff7f",
+      "external/minidx9": "7751cf73f5c06f1be21f5f31c3e2d9a7bacd3a93",
+      "external/parallel-hashmap": "67c24619e4f5ab2097b74cc397732c17a25d6944",
+      "external/simdjson": "2028bdaeacfcfecbcc78f33d398f73dcd478a0b1"
+    }
+  },
   "cet": {
     "kind": "git",
     "url": "https://github.com/maximegmd/CyberEngineTweaks",

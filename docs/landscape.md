@@ -23,7 +23,8 @@ for patch 2.5 (`refs/nativedb/src/assets/reddump`: 16,141 class entries, 823 glo
 
 | Layer | Tool (pin) | What an agent does with it | Runs on | 2.5 |
 |---|---|---|---|---|
-| Native loader | RED4ext (v1.31.0) | Loads every native plugin below | game machine | yes |
+| Native loader | RED4ext (v1.31.0) | Loads the RED4ext plugins below (`red4ext/plugins`) through a `winmm.dll` proxy | game machine | yes |
+| Native loader | CET's ASI loader (Ultimate ASI Loader fork) | `bin/x64/version.dll`: loads `bin/x64/plugins/*.asi` (CET) and exports `ResolveAddress` from the game's own `cyberpunk2077_addresses.json`. CET has no runtime reference to RED4ext.dll; its README still says to install RED4ext first (unverified) | game machine | yes |
 | Lua runtime | Cyber Engine Tweaks (v1.38.1) | Run Lua against the live game: call any script class or global, `Observe`/`Override` script functions, read and write TweakDB, ImGui windows, console | game machine | yes |
 | Script compiler | redscript (v0.5.32) | Compile `.reds` mods into the game's script cache at launch; decompile and disassemble `final.redscripts` | either (Rust; no Linux release binary, builds from source) | yes |
 | Script tooling | redscript-ide (v0.2.25), redscript-dap (v0.0.8) | Language server for diagnostics without the game; debug adapter for breakpoints in a running game | IDE: either (Linux binary exists); DAP: game machine | unverified |
@@ -48,6 +49,10 @@ functions with `ObserveBefore`/`ObserveAfter` (`Observe` is the before alias) an
 (replace, with the original passed in), builds script callback objects with `NewProxy`, and runs
 a per-frame `onUpdate` event that a bridge can poll from. The scripting wiki's
 `cyber-engine-tweaks/cet-functions` section documents all of it.
+
+CET's Lua is not a security boundary: mods can write any file (`io.output`) and load native DLLs
+(`db:load_extension`). A bridge that executes Lua it receives is remote native code execution, so
+its transport has to be local-only and authenticated. Details in `docs/reviews.md`.
 
 Existing bridges, all prior art rather than dependencies:
 

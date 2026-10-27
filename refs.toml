@@ -25,6 +25,15 @@ layer = "Lua runtime"
 note = "Cyber Engine Tweaks: Lua over the game's scripting RTTI, Observe/Override hooks, console, TweakDB editor, ImGui overlay. 1.38.0 is the first 2.5 build."
 
 [[git]]
+name = "asi-loader"
+url = "https://github.com/maximegmd/Ultimate-ASI-Loader"
+ref = "dc37f026f1e37ad364c3ee89ef57169ffaec8bb6"
+submodules = true
+group = "core"
+layer = "native loader"
+note = "Source of the version.dll CET commits as a binary (vendor/asiloader): Ultimate ASI Loader at ThirteenAG c30e6d3d plus three CET commits adding ResolveAddress, which reads the game's own bin/x64/cyberpunk2077_addresses.json. CET loads it by path and cannot run without that export. premake5 + MSVC."
+
+[[git]]
 name = "red4ext"
 url = "https://github.com/wopss/RED4ext"
 ref = "v1.31.0"
