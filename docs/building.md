@@ -30,3 +30,17 @@ Inside a script, enter the VS developer shell with `Microsoft.VisualStudio.DevSh
 | TweakXL, ArchiveXL, Codeware, RedHotTools | xmake | xmake-repo packages float: lock them on the first build. |
 | RedSocket | xmake | Its `after_build` runs `red-cli` from PATH; disable it. |
 | redscript | cargo | `--locked`. |
+
+## Builds
+
+`tools/windows/build-cet.ps1` fetches the pinned commits (CET plus its release tag, because CET's
+`xmake.lua` reads its version from `git describe`), builds `version.dll` and
+`cyber_engine_tweaks.asi`, and stages them with CET's scripts, fonts, license file and the two
+TweakDB name tables from `refs/wolvenkit` (`WolvenKit.Common/Resources`, tag 9.1.0) in the game
+layout. `tools/windows/install-stage.ps1` copies a stage into the game and writes a record that
+`-Uninstall` uses to restore the folder exactly (install is exercised; `-Uninstall` not yet). The
+xmake package versions and the xmake-repo commit of each build are kept in `locks/`.
+
+| Date | What | Commits | Outputs (sha256) | Result |
+|---|---|---|---|---|
+| 2026-10-27 | CET v1.38.1 + ASI loader | cet `213151fa22`, asi-loader `dc37f026f1`, xmake-repo `747ff46a40` (`locks/cet-213151fa22.xmake-requires.lock`) | `cyber_engine_tweaks.asi` `2d77bcf2…`, `version.dll` `eb93226d…`, `usedhashes.kark` `5d27963e…`, `tweakdbstr.kark` `1eff27ba…` | Loads on patch 2.5 (log: `CET version v1.38.1`, `Game version 3.0.88.46235`, every hook complete, address table built); title screen shows CET's first-time setup. |

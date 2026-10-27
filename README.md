@@ -4,9 +4,9 @@ Agent-driven modding for Cyberpunk 2077: the upstream tools and documentation an
 pinned and mirrored locally, and (next) a bridge that lets an agent read and drive a running game
 the way `unreal-vibe-modding` does for Unreal titles.
 
-**Status:** sources and docs gathered and indexed, first source reviews recorded, Windows build
-toolchain installed and checked. Nothing third-party has been built or installed on a game
-machine yet. Target: patch 2.5 (game version 3.0.88.46235).
+**Status:** sources and docs gathered and indexed, source reviews recorded, Windows build
+toolchain installed. CET v1.38.1 and its ASI loader, built here from reviewed source, load on
+patch 2.5 (game version 3.0.88.46235). No agent bridge yet.
 
 ## Layout
 
@@ -21,6 +21,9 @@ machine yet. Target: patch 2.5 (game version 3.0.88.46235).
 | `docs/reviews.md` | Source review verdicts, required before anything third-party is built |
 | `docs/building.md` | Build host, toolchain versions and how each project builds |
 | `tools/windows/toolchain-smoke.ps1` | Checks the Windows toolchain with one hello world per build system |
+| `tools/windows/build-cet.ps1` | Builds CET and its ASI loader from pinned commits into a staged game layout |
+| `tools/windows/install-stage.ps1` | Installs a stage into the game with a record; `-Uninstall` restores the folder |
+| `locks/` | xmake package locks of each build |
 | `AGENTS.md` | Rules for agents working here |
 
 ## Getting the sources
