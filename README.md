@@ -4,8 +4,9 @@ Agent-driven modding for Cyberpunk 2077: the upstream tools and documentation an
 pinned and mirrored locally, and (next) a bridge that lets an agent read and drive a running game
 the way `unreal-vibe-modding` does for Unreal titles.
 
-**Status:** gathering. Sources and docs are collected and indexed. Nothing has been built or
-installed on a game machine yet. Target: patch 2.5 (game version 3.0.88.46235).
+**Status:** sources and docs gathered and indexed, first source reviews recorded, Windows build
+toolchain installed and checked. Nothing third-party has been built or installed on a game
+machine yet. Target: patch 2.5 (game version 3.0.88.46235).
 
 ## Layout
 
@@ -18,6 +19,8 @@ installed on a game machine yet. Target: patch 2.5 (game version 3.0.88.46235).
 | `docs/landscape.md` | What each tool does for an agent, where it runs, its 2.5 status, the gaps |
 | `docs/where-to-look.md` | Question-to-file map across the clones and wikis |
 | `docs/reviews.md` | Source review verdicts, required before anything third-party is built |
+| `docs/building.md` | Build host, toolchain versions and how each project builds |
+| `tools/windows/toolchain-smoke.ps1` | Checks the Windows toolchain with one hello world per build system |
 | `AGENTS.md` | Rules for agents working here |
 
 ## Getting the sources
