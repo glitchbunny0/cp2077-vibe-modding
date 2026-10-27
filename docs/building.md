@@ -26,7 +26,7 @@ Inside a script, enter the VS developer shell with `Microsoft.VisualStudio.DevSh
 |---|---|---|
 | RED4ext | CMake >= 3.26 | Configure fetches its pinned dependencies (rows in `docs/reviews.md`). |
 | CET | xmake >= 3.1 | `xmake build` only. Never `xmake package`: it downloads two `.kark` files unhashed. |
-| CET's ASI loader (`asi-loader`) | premake 5 -> `vs2022` -> MSBuild | Use our premake 5.0.0, not the repo's committed `premake5.exe`. The x64 target is `version.dll`. |
+| CET's ASI loader (`asi-loader`) | premake 5 -> `vs2022` -> MSBuild | Use our premake 5.0.0, not the repo's committed `premake5.exe`. Build only the `Ultimate-ASI-Loader-x64` project (the workspace also builds four demo `.asi` plugins); its Release output is `bin/x64/Release/version.dll`. Ship CET's `global.ini` with it. |
 | TweakXL, ArchiveXL, Codeware, RedHotTools | xmake | xmake-repo packages float: lock them on the first build. |
 | RedSocket | xmake | Its `after_build` runs `red-cli` from PATH; disable it. |
 | redscript | cargo | `--locked`. |
