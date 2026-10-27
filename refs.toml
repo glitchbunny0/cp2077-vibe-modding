@@ -7,6 +7,9 @@
 # exists; a branch where the project has no releases. The lock file holds the
 # exact commit either way.
 #
+# `submodules = true` also checks out the submodules the superproject pins
+# (the code a build of that repo would compile).
+#
 # Groups: core, plugins, bridges, examples, game, docs, heavy.
 # `fetch_refs.py sync` takes every group except `heavy`; add `--with-heavy`.
 
@@ -16,6 +19,7 @@
 name = "cet"
 url = "https://github.com/maximegmd/CyberEngineTweaks"
 ref = "v1.38.1"
+submodules = true
 group = "core"
 layer = "Lua runtime"
 note = "Cyber Engine Tweaks: Lua over the game's scripting RTTI, Observe/Override hooks, console, TweakDB editor, ImGui overlay. 1.38.0 is the first 2.5 build."
@@ -64,6 +68,7 @@ note = "Debug adapter: breakpoints and stepping in game scripts of a running gam
 name = "tweakxl"
 url = "https://github.com/psiberx/cp2077-tweak-xl"
 ref = "v1.12.0"
+submodules = true
 group = "core"
 layer = "data"
 note = "Loads TweakDB edits (YAML/.tweak) from mods without overwriting each other."
@@ -72,6 +77,7 @@ note = "Loads TweakDB edits (YAML/.tweak) from mods without overwriting each oth
 name = "archivexl"
 url = "https://github.com/psiberx/cp2077-archive-xl"
 ref = "v1.28.1"
+submodules = true
 group = "core"
 layer = "assets"
 note = "Loads new items, appearances and world edits from .archive mods."
@@ -80,6 +86,7 @@ note = "Loads new items, appearances and world edits from .archive mods."
 name = "codeware"
 url = "https://github.com/psiberx/cp2077-codeware"
 ref = "v1.21.1"
+submodules = true
 group = "core"
 layer = "script library"
 note = "Native library that widens what redscript and CET can reach (reflection, entities, UI, events)."
@@ -88,6 +95,7 @@ note = "Native library that widens what redscript and CET can reach (reflection,
 name = "red-hot-tools"
 url = "https://github.com/psiberx/cp2077-red-hot-tools"
 ref = "v1.3.0-rc.3"
+submodules = true
 group = "core"
 layer = "dev loop"
 note = "Hot reload of scripts, tweaks and archives; world/entity/UI inspector. RC3 shipped two days before patch 2.5, so 2.5 support is unconfirmed."
@@ -106,6 +114,7 @@ note = "Bundles and installs redscript/CET mods from a project folder (red.confi
 name = "red-socket"
 url = "https://github.com/rayshader/cp2077-red-socket"
 ref = "v0.5.0"
+submodules = true
 group = "plugins"
 layer = "transport"
 note = "TCP client for redscript and CET; the fast transport of the CET MCP bridge. Last release 2025-09 (patch 2.31)."

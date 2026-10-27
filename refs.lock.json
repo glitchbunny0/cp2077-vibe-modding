@@ -6,7 +6,13 @@
     "commit": "0984aa1c94df3c090ffe8eee6f549e1d4d466136",
     "commit_date": "2026-10-25T11:04:59+03:00",
     "fetched_at": "2026-10-27T20:25:20+00:00",
-    "bytes": 3465628
+    "bytes": 23684587,
+    "submodules": {
+      "vendor/RED4ext.SDK": "5246e659d783e5834cc08a90e56c8932c9ed3449",
+      "vendor/nameof": "9494cbd4aadef3c34f7dccdc93d544b00c0a26b9",
+      "vendor/semver": "d3645f7b7d9c0d2d91c9a1e817c4d47ea4ccf514",
+      "vendor/wil": "5bb5fbddf4b9c8e602c2da690f342839ad54084a"
+    }
   },
   "cet": {
     "kind": "git",
@@ -15,7 +21,10 @@
     "commit": "213151fa22c79182922a08a44e4a44d44739d1cd",
     "commit_date": "2026-10-26T01:11:23+01:00",
     "fetched_at": "2026-10-27T20:25:13+00:00",
-    "bytes": 51579081
+    "bytes": 66745955,
+    "submodules": {
+      "vendor/RED4ext.SDK": "5246e659d783e5834cc08a90e56c8932c9ed3449"
+    }
   },
   "cet-examples": {
     "kind": "git",
@@ -51,7 +60,14 @@
     "commit": "b56f0f66749a7a54ffa4d1a6c403ddc655a37ca7",
     "commit_date": "2026-10-25T23:55:25+03:00",
     "fetched_at": "2026-10-27T20:25:22+00:00",
-    "bytes": 18488342
+    "bytes": 39131353,
+    "submodules": {
+      "vendor/RED4ext.SDK": "5246e659d783e5834cc08a90e56c8932c9ed3449",
+      "vendor/clip": "4bd90a5491f9824b257b748f801b8ac1a3b8a5c7",
+      "vendor/nameof": "9494cbd4aadef3c34f7dccdc93d544b00c0a26b9",
+      "vendor/semver": "68228385ea2c035cede62569b6cecf8a390b8300",
+      "vendor/wil": "1340b8af0dcda4577f1e173db0782eb81bd547e2"
+    }
   },
   "docs-red4ext": {
     "kind": "gitbook",
@@ -132,7 +148,11 @@
     "commit": "de93c5696f8342edf6086c44d400774e6c1c3c2b",
     "commit_date": "2026-10-20T10:57:27+03:00",
     "fetched_at": "2026-10-27T20:25:23+00:00",
-    "bytes": 18592053
+    "bytes": 33919752,
+    "submodules": {
+      "vendor/RED4ext.SDK": "f9ad5334362a8a0815baf58f47615697485feb52",
+      "vendor/nameof": "9494cbd4aadef3c34f7dccdc93d544b00c0a26b9"
+    }
   },
   "red-lib": {
     "kind": "git",
@@ -159,7 +179,11 @@
     "commit": "055420a7317cb6e318251ed168eefad10fb1ea5b",
     "commit_date": "2025-09-11T22:17:29+02:00",
     "fetched_at": "2026-10-27T20:25:25+00:00",
-    "bytes": 1486675
+    "bytes": 16466017,
+    "submodules": {
+      "vendors/RED4ext.SDK": "3ccf163b23183636f192a94da4c29b45f8d0cfb3",
+      "vendors/RedLib": "93237f705531327d4c6f0414ebef2cb75875b45f"
+    }
   },
   "red4ext": {
     "kind": "git",
@@ -222,7 +246,14 @@
     "commit": "0d13bb9057a0c70b35292c0d8a3c2076e2b6827a",
     "commit_date": "2026-10-25T01:09:52+03:00",
     "fetched_at": "2026-10-27T20:25:19+00:00",
-    "bytes": 5269706
+    "bytes": 27461777,
+    "submodules": {
+      "vendor/RED4ext.SDK": "5246e659d783e5834cc08a90e56c8932c9ed3449",
+      "vendor/nameof": "1f071407dcc742650ffdfec10d19d64f647baf33",
+      "vendor/pegtl": "3fbf6721e8d90fb737f48f6b1c88aa782e2cd4b7",
+      "vendor/semver": "d3645f7b7d9c0d2d91c9a1e817c4d47ea4ccf514",
+      "vendor/wil": "5bb5fbddf4b9c8e602c2da690f342839ad54084a"
+    }
   },
   "wiki-archivexl": {
     "kind": "git",

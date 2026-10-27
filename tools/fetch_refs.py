@@ -106,13 +106,42 @@ def clone_at(url: str, target: str, dest: Path) -> str:
     return git("rev-parse", "HEAD", cwd=dest)
 
 
+SUBMODULE_LINE = re.compile(r"^[ +\-U]?([0-9a-f]{40})\s+(\S+)")
+
+
+def init_submodules(dest: Path) -> dict[str, str]:
+    """Check out every submodule at the commit the superproject pins, shallowly."""
+    git("-c", "url.https://github.com/.insteadOf=git@github.com:", "-c", "protocol.file.allow=never",
+        "submodule", "update", "--init", "--recursive", "--depth", "1", "--jobs", "4", cwd=dest)
+    subs = {}
+    for line in git("submodule", "status", "--recursive", cwd=dest).splitlines():
+        m = SUBMODULE_LINE.match(line.strip())
+        if m:
+            subs[m.group(2)] = m.group(1)
+    return subs
+
+
+def submodules_missing(dest: Path) -> bool:
+    try:
+        status = git("submodule", "status", "--recursive", cwd=dest)
+    except RuntimeError:
+        return True
+    return any(line.startswith("-") for line in status.splitlines())
+
+
 def sync_git(e: dict, lock: dict, update: bool) -> str:
     name, dest = e["name"], REFS / e["name"]
     locked = lock.get(name)
+    want_subs = bool(e.get("submodules"))
     if not update and locked and locked.get("ref") == e["ref"] and head_of(dest) == locked["commit"]:
-        return f"{name}: ok {locked['commit'][:10]}"
+        if not (want_subs and (submodules_missing(dest) or "submodules" not in locked)):
+            return f"{name}: ok {locked['commit'][:10]}"
+        locked["submodules"] = init_submodules(dest)
+        locked["bytes"] = du(dest)
+        return f"{name}: ok {locked['commit'][:10]}, {len(locked['submodules'])} submodules added"
     target = locked["commit"] if (locked and not update and locked.get("ref") == e["ref"]) else e["ref"]
     commit = clone_at(e["url"], target, dest)
+    subs = init_submodules(dest) if want_subs else {}
     lock[name] = {
         "kind": "git",
         "url": e["url"],
@@ -122,8 +151,11 @@ def sync_git(e: dict, lock: dict, update: bool) -> str:
         "fetched_at": now(),
         "bytes": du(dest),
     }
+    if subs:
+        lock[name]["submodules"] = subs
     how = "pinned" if target == commit else f"resolved {e['ref']} ->"
-    return f"{name}: {how} {commit[:10]}"
+    tail = f", {len(subs)} submodules" if subs else ""
+    return f"{name}: {how} {commit[:10]}{tail}"
 
 
 def http_get(url: str, tries: int = 4) -> bytes:
