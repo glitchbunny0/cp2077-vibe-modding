@@ -252,10 +252,19 @@ note = "The game's .tweak sources (TweakDB records) as REDmod ships them, patch 
 [[git]]
 name = "wolvenkit"
 url = "https://github.com/WolvenKit/WolvenKit"
-ref = "9.1.0"
+ref = "10.0.0-beta.1"
 group = "heavy"
 layer = "assets"
-note = "WolvenKit editor and CLI (GPL-3.0, .NET 8). The CLI does not run on Linux; asset work happens on the Windows box."
+note = "WolvenKit editor and CLI (GPL-3.0, .NET 10). 10.0.0-beta.1 is the first release with patch 2.5 support. Releases ship a Linux CLI build (WolvenKit.ConsoleLinux) beside the Windows one."
+
+[[git]]
+name = "wolvenkit-kraken"
+url = "https://github.com/WolvenKit/kraken"
+ref = "f75df7ab817d9ffb43ea8ad84a698ad3df9ba4c1"
+submodules = true
+group = "heavy"
+layer = "assets"
+note = "Source of the Kraken (Oodle-compatible) compressor WolvenKit.Core commits as lib/libkraken.so and kraken.dll; the Linux CLI packs archives through it. Build it ourselves instead of using the committed binary."
 
 # --- docs: wikis as markdown ---------------------------------------------------
 # GitBook spaces publish llms.txt plus a .md copy of every page.

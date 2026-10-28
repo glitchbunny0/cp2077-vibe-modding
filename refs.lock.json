@@ -364,11 +364,24 @@
   "wolvenkit": {
     "kind": "git",
     "url": "https://github.com/WolvenKit/WolvenKit",
-    "ref": "9.1.0",
-    "commit": "4d1716b1755dcadead2815b3ec356fa61f30861c",
-    "commit_date": "2026-10-10T08:56:33+02:00",
-    "fetched_at": "2026-10-27T20:28:52+00:00",
-    "bytes": 254647175
+    "ref": "10.0.0-beta.1",
+    "commit": "20f007241daf8bbc84c6eaf3092b20fb8e2daf5c",
+    "commit_date": "2026-10-24T19:54:33+02:00",
+    "fetched_at": "2026-10-28T19:07:24+00:00",
+    "bytes": 254288363
+  },
+  "wolvenkit-kraken": {
+    "kind": "git",
+    "url": "https://github.com/WolvenKit/kraken",
+    "ref": "f75df7ab817d9ffb43ea8ad84a698ad3df9ba4c1",
+    "commit": "f75df7ab817d9ffb43ea8ad84a698ad3df9ba4c1",
+    "commit_date": "2025-11-12T15:47:21+01:00",
+    "fetched_at": "2026-10-28T19:10:39+00:00",
+    "bytes": 83531551,
+    "submodules": {
+      "simde": "e9cc73da14ab6bc2bf7c2bb4f1c2645415515d8b",
+      "simde/test/munit": "da8f73412998e4f1adf1100dc187533a51af77fd"
+    }
   },
   "wolvenkit-mcp": {
     "kind": "git",
