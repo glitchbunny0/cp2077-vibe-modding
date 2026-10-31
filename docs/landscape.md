@@ -72,7 +72,7 @@ answers uvmod's LuaRepl protocol from `mods/VibeBridge/LuaRepl`, so the Unreal t
 SSH transports, crash triage, journal and MCP server carry over; CETBridge's 34 game handlers ride
 along unmodified (WkMCP's fixed copy, reviewed in `docs/reviews.md`) behind `uvmod cet` and the
 MCP tool `cet`, with a fixes file that repairs the twelve that fail on 2.5 (two of them with fixes from WkMCP pull request #12) and adds `overview`
-(eddies, district, wanted level, time, tracked quest). Live on 2.5: about 0.9 s per call over SSH. CET gives mods no debug library, so
+(eddies, district, wanted level, time, tracked quest). Live on 2.5: a 30-50 ms round trip per request on the game PC, about 0.9 s over SSH. CET gives mods no debug library, so
 a request cannot be interrupted; screenshots copy the game window and refuse while another
 window is in front.
 

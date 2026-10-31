@@ -23,9 +23,9 @@ get what an agent needs to use it well:
   `tools/windows/`): source review verdicts, and scripts that build CET with its ASI loader, RED4ext and an
   archives-only RedHotTools for 2.5 from pinned commits and install them with a record that undoes the install.
 
-> **Status:** works on patch 2.5 (game version 3.0.88.46235, GOG, Windows) with CET 1.38.1, CLI and MCP, with the agent
-> on another machine reaching the game PC over SSH. Not tried yet: the agent on the game PC itself, Steam and Epic
-> installs, Linux with Proton. Please report what you find.
+> **Status:** works on patch 2.5 (game version 3.0.88.46235, GOG, Windows) with CET 1.38.1, CLI and MCP: with the agent
+> on the game PC itself (Python 3.13; Lua, game handlers, log, crash report and screenshots; 30-50 ms round trip per request) and
+> on another machine over SSH. Not tried yet: Steam and Epic installs, Linux with Proton. Please report what you find.
 
 ## Quick start
 
