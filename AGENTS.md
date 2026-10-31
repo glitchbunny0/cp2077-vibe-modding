@@ -39,6 +39,7 @@ repository. They belong in private local config. Write paths relative to the gam
 ## Conventions
 
 - Python: standard library only unless a dependency is clearly worth it.
-- `skills/`: a game fact goes in only once it was seen working (or failing) in the running game; say on which patch
-  and CET version, and mark what was not tried live as untested. A wrong fact there crashes someone's game.
+- `skills/`: every game fact says how it is known: measured (ran in the game, with patch and CET version), static
+  (read from the scripts or the RTTI dump) or untested. A wrong fact there crashes someone's game. The full bar and
+  what goes where: `CONTRIBUTING.md`.
 - Names of game types and functions are guesses about behaviour until a trace confirms them.

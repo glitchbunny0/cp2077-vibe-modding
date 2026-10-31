@@ -45,11 +45,15 @@ jobs:
           if ($failed) { exit 1 }
       - name: Shell scripts
         run: shellcheck tools/*.sh
-      - name: Skill has its frontmatter
+      - name: Skill has its frontmatter and links every reference
         run: |
           for f in skills/*/SKILL.md; do
             head -1 "$f" | grep -qx -- '---' || { echo "$f: no frontmatter"; exit 1; }
             sed -n '2,/^---$/p' "$f" | grep -q '^name: ' || { echo "$f: no name"; exit 1; }
             sed -n '2,/^---$/p' "$f" | grep -q '^description: ' || { echo "$f: no description"; exit 1; }
+            for r in "$(dirname "$f")"/references/*.md; do
+              [ -e "$r" ] || continue
+              grep -q "references/$(basename "$r")" "$f" || { echo "$f does not link $(basename "$r")"; exit 1; }
+            done
             echo "$f: ok"
           done

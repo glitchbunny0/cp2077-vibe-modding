@@ -128,6 +128,13 @@ run code you built from source you read, as this project does on its own test ma
 | `patches/`, `locks/` | Our patches on upstream sources; xmake package locks of each build |
 | `AGENTS.md` | Rules for agents working in this repository |
 
+## Contributing
+
+New facts, crash rules, source pins, reviews and build scripts are welcome as pull requests; `CONTRIBUTING.md` says
+what goes where and the bar a fact has to meet. The skill asks your agent to offer back what it measures, so the usual
+path is: your agent finds something, asks you, and opens the PR from your fork. New ready-made game calls and tool
+changes go to [uvmod](https://github.com/glitchbunny0/unreal-vibe-modding).
+
 ## Legal
 
 Not affiliated with or endorsed by CD PROJEKT RED. This repository holds only its own code and notes: the names of

@@ -68,3 +68,15 @@ Measured facts for writing Cyber Engine Tweaks (CET) Lua against Cyberpunk 2077 
 - Before you name a class or function, find it in the 2.5 dump or scripts (`references/engine-sources.md`). Tag claims as verified in source, documented or inferred.
 - When the player is watching, you may announce each live step on screen (recipe in `references/messages-and-calls.md`).
 - Screenshots work only while the game window is in front. Ask the player to switch windows; do not work around the check.
+
+## Adding what you learn
+
+This skill grows from what agents measure. When you confirm something in the game that is not here (a call that
+works, one that crashes, a convention), or find a fact here wrong on your patch:
+
+1. Tell the player, and ask whether they want to contribute it to the kit.
+2. If yes: write it into the matching reference file as a rule with its reason, tagged measured, static or untested,
+   with the game patch and CET version, plus the Lua that ran. Generic engine behaviour only; leave out the player's
+   own mod design, machine details and story content.
+3. Open the pull request from the player's fork of the kit (`CONTRIBUTING.md` there says what goes where). A new
+   ready-made game call belongs in uvmod instead (its `CONTRIBUTING.md`).
