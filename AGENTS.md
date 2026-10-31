@@ -19,7 +19,7 @@ released 2026-10-22).
 - Read it freely. Never edit files there; copy what you need and credit it.
 - Never commit, publish or ship anything from `refs/`. WolvenKit is GPL-3.0, and `game-scripts` /
   `game-tweaks` are CDPR's game content: study material for interoperability, nothing more.
-- Cloning runs no upstream code. Building or running it is a separate decision (next section).
+- Cloning runs no upstream code. Building or running it is a separate step (next section).
 
 ## Builds and bridges
 
@@ -33,7 +33,7 @@ released 2026-10-22).
 ## Keep machine details out
 
 No hostnames, IPs, user names, install paths of a specific machine or SSH recipes in this
-repository. They belong in private local config. Write paths relative to the game directory
+repository. Write paths relative to the game directory
 (`<game>/bin/x64/plugins/cyber_engine_tweaks/mods/...`).
 
 ## Conventions
