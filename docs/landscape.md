@@ -30,16 +30,16 @@ for patch 2.5 (`refs/nativedb/src/assets/reddump`: 16,141 class entries, 823 glo
 | Script tooling | redscript-ide (v0.2.25), redscript-dap (v0.0.8) | Language server for diagnostics without the game; debug adapter for breakpoints in a running game | IDE: either (Linux binary exists); DAP: game machine | unverified |
 | Script library | Codeware (v1.21.1) | Reflection, entity spawning, UI, events from redscript and CET | game machine | yes |
 | Data | TweakXL (v1.12.0) | Load YAML/`.tweak` record edits that don't collide with other mods | game machine | yes |
-| Assets | ArchiveXL (v1.28.1), WolvenKit (9.1.0) | Load new items/appearances/world edits; unpack, convert (CR2W to JSON), repack archives | ArchiveXL: game machine. WolvenKit CLI: 9.1.0 also ships a `ConsoleLinux` build (untested here) | yes |
-| Dev loop | RedHotTools (v1.3.0-rc.3), red-cli (v0.5.1) | Hot reload scripts, tweaks and archives; world/entity/UI inspector. red-cli bundles and installs a mod project | RHT: game machine. red-cli: either (Dart, Linux build) | RHT unconfirmed (RC3 is from 2026-10-20) |
+| Assets | ArchiveXL (v1.28.1), WolvenKit (10.0.0-beta.1) | Load new items/appearances/world edits; unpack, convert (CR2W to JSON), repack archives | ArchiveXL: game machine. WolvenKit CLI: either; its `ConsoleLinux` build runs boxed by `tools/wkit.sh` (no texture conversion on Linux) | yes (WolvenKit from 10.0.0-beta.1; 9.1.0 predates 2.5) |
+| Dev loop | RedHotTools (v1.3.0-rc.3), red-cli (v0.5.1) | Hot reload scripts, tweaks and archives; world/entity/UI inspector. red-cli bundles and installs a mod project | RHT: game machine. red-cli: either (Dart, Linux build) | RHT RC3: crashes 2.5 at start (upstream issue #21); our archives-only port (`patches/red-hot-tools/`) hot-reloads archives on 2.5 |
 | Transport | RedSocket (v0.5.0), RedFileSystem (v0.16.0) | TCP client for CET/redscript; sandboxed file IO | game machine | RedSocket unconfirmed (2025-09) |
 | Reverse engineering | RTTIDumper, RedMemoryDump (v0.9.1), RED4ext.SDK, NativeDB | Dump the RTTI; diff a live object's memory; generated C++ type layouts; browsable class reference | game machine (dumpers), anywhere (data) | SDK + NativeDB dump: yes. RedMemoryDump: unconfirmed |
 
 Two framework families matter for maintenance: psiberx (TweakXL, ArchiveXL, Codeware, RedHotTools,
 red-lib) and rayshader (RedSocket, RedFileSystem, red-cli, NativeDB, RedMemoryDump). Most of
 their tools shipped 2.5 updates within three days of the patch. Released before 2.5 and not yet
-confirmed on it: RedHotTools (RC3, 2026-10-20), RedSocket (2025-09), RedMemoryDump (2025-11),
-redscript-dap (2025-08) and redscript-ide (2025-09).
+confirmed on it: RedSocket (2025-09), RedMemoryDump (2025-11), redscript-dap (2025-08) and
+redscript-ide (2025-09). RedHotTools RC3 (2026-10-20) was checked and crashes 2.5 at start.
 
 ## Driving a running game
 
@@ -67,9 +67,9 @@ Existing bridges, prior art for ours:
   fork of CETBridge for live tools. Windows only, built against WolvenKit 8.18.
 - **wolvenkit-mcp** (Y4rd13): TypeScript MCP server over the WolvenKit CLI.
 
-**Ours: `uvmod` with `UVMOD_CET`** (unreal-vibe-modding, branch `cet`). A CET build of VibeBridge
-answers uvmod's LuaRepl protocol from `mods/VibeBridge/LuaRepl`, so the Unreal tooling's SSH
-transport, crash triage, journal and MCP server carry over; CETBridge's 34 game handlers ride
+**Ours: `uvmod` with `UVMOD_CET`** (unreal-vibe-modding, from version 0.2.0). A CET build of VibeBridge
+answers uvmod's LuaRepl protocol from `mods/VibeBridge/LuaRepl`, so the Unreal tooling's local and
+SSH transports, crash triage, journal and MCP server carry over; CETBridge's 34 game handlers ride
 along unmodified (WkMCP's fixed copy, reviewed in `docs/reviews.md`) behind `uvmod cet` and the
 MCP tool `cet`, with a fixes file that repairs the twelve that fail on 2.5 (two of them with fixes from WkMCP pull request #12) and adds `overview`
 (eddies, district, wanted level, time, tracked quest). Live on 2.5: about 0.9 s per call over SSH. CET gives mods no debug library, so
@@ -91,8 +91,8 @@ window is in front.
 - **No current CET Lua typedefs.** The last public set covers CET 1.27 / patch 2.01 and lives on
   Discord. The 2.5 RTTI dump is enough to generate fresh LuaLS definitions.
 - **Game sources lag one patch.** Both CDPR source mirrors stop at 2.31.
-- **Three dev tools predate 2.5**: RedHotTools RC3, RedSocket 0.5.0, redscript-dap 0.0.8.
-  Each needs a live check before anything depends on it.
+- **Dev tools that predate 2.5**: RedSocket 0.5.0 and redscript-dap 0.0.8 need a live check before
+  anything depends on them; RedHotTools RC3 crashes 2.5 (archives-only port in `patches/`).
 - **The GitHub wikis of CET (2020) and redscript (2021) are stale.** The GitBook "Scripting
   Cyberpunk" space replaced them; prefer it.
 - **The bridges are small and young**, like their Unreal counterparts: an open niche, not a solved one.
