@@ -46,6 +46,7 @@ Search the mirrors with ripgrep; every GitBook space also has its `llms.txt` pag
 | Question | Look in |
 |---|---|
 | General mod debugging, log locations | `docs/wiki-modding/debug-guide/` |
+| The game froze, crashed or quit: what happened and when | this repo: `docs/crash-probing.md` (run `tools/windows/crash-probe.ps1` first) |
 | User-side troubleshooting (load order, broken frameworks after a patch) | `docs/wiki-modding/for-mod-users/user-guide-troubleshooting/` |
 | What changed for plugins in the latest patch | framework release notes (`gh release view <tag> -R <repo>`) and the commits between pins in `refs.lock.json` |
 
