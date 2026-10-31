@@ -8,9 +8,9 @@ install scripts) and runtime capabilities (network, process spawn, persistence, 
 outside the game directory, anything that phones home).
 
 Method for the 2026-10-27 round: three read-only subagents (claude-haiku-5-5) took 13 repos with
-the brief from the `unreal-game-modding` skill. Judy re-read in the source every SUSPICIOUS claim
-and every claim the plan depends on before recording it here, and reviewed the rows marked
-"Judy" herself.
+the brief in `docs/review-brief.md`. Judy (the maintainer's AI agent) re-read in the source every
+SUSPICIOUS claim and every claim the plan depends on before recording it here, and reviewed the
+rows marked "Judy" herself.
 
 | Repo | Commit | Verdict | Date | Notes |
 |---|---|---|---|---|
