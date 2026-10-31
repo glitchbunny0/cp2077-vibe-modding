@@ -1,0 +1,55 @@
+name: checks
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: fetch_refs runs, and every git source in refs.toml is locked at a full commit
+        run: |
+          python tools/fetch_refs.py --help > /dev/null
+          python - <<'EOF'
+          import json, re, sys, tomllib
+          manifest = tomllib.load(open("refs.toml", "rb"))
+          lock = json.load(open("refs.lock.json"))
+          bad = []
+          for e in manifest.get("git", []):
+              entry = lock.get(e["name"])
+              if not entry or not re.fullmatch(r"[0-9a-f]{40}", entry.get("commit", "")):
+                  bad.append(e["name"])
+              elif entry.get("url") != e["url"]:
+                  bad.append(f'{e["name"]} (url differs from the lock)')
+          names = [e["name"] for kind in manifest.values() for e in kind]
+          dupes = {n for n in names if names.count(n) > 1}
+          if bad or dupes:
+              sys.exit(f"not locked or mismatched: {bad}; duplicate names: {sorted(dupes)}")
+          print(f"{len(names)} sources, {len(manifest.get('git', []))} git sources locked")
+          EOF
+      - name: PowerShell scripts parse
+        shell: pwsh
+        run: |
+          $failed = $false
+          foreach ($f in Get-ChildItem tools/windows -Filter *.ps1) {
+            $errors = $null
+            [void][System.Management.Automation.Language.Parser]::ParseFile($f.FullName, [ref]$null, [ref]$errors)
+            if ($errors) { $failed = $true; $errors | ForEach-Object { "$($f.Name): $($_.Extent.StartLineNumber): $($_.Message)" } }
+            else { "$($f.Name): ok" }
+          }
+          if ($failed) { exit 1 }
+      - name: Shell scripts
+        run: shellcheck tools/*.sh
+      - name: Skill has its frontmatter
+        run: |
+          for f in skills/*/SKILL.md; do
+            head -1 "$f" | grep -qx -- '---' || { echo "$f: no frontmatter"; exit 1; }
+            sed -n '2,/^---$/p' "$f" | grep -q '^name: ' || { echo "$f: no name"; exit 1; }
+            sed -n '2,/^---$/p' "$f" | grep -q '^description: ' || { echo "$f: no description"; exit 1; }
+            echo "$f: ok"
+          done
