@@ -4,9 +4,12 @@ Rules for any agent working in this repository.
 
 ## What this is
 
-A workspace for modding Cyberpunk 2077 (REDengine 4) with an agent: the upstream tools and
-documentation it studies, notes on what they can do, and later a bridge that lets an agent drive a
-running game. Patch target: **2.5** (game version 3.0.88.46235, released 2026-10-22).
+A kit for modding Cyberpunk 2077 (REDengine 4) with an agent: the upstream tools and documentation
+it studies, notes on what they can do, the agent skill with the game's measured API
+(`skills/cp2077-vibe-modding/`), and scripts that build and install the frameworks from reviewed
+source. The bridge that lets an agent drive a running game is `uvmod` with `UVMOD_CET`
+(github.com/glitchbunny0/unreal-vibe-modding). Patch target: **2.5** (game version 3.0.88.46235,
+released 2026-10-22).
 
 ## refs/ is upstream, not ours
 
@@ -36,4 +39,6 @@ repository. They belong in private local config. Write paths relative to the gam
 ## Conventions
 
 - Python: standard library only unless a dependency is clearly worth it.
+- `skills/`: a game fact goes in only once it was seen working (or failing) in the running game; say on which patch
+  and CET version, and mark what was not tried live as untested. A wrong fact there crashes someone's game.
 - Names of game types and functions are guesses about behaviour until a trace confirms them.
