@@ -1,0 +1,391 @@
+diff --git a/lib/Red/TypeInfo/Definition.hpp b/lib/Red/TypeInfo/Definition.hpp
+index 7bd9f7a..e027d0c 100644
+--- a/lib/Red/TypeInfo/Definition.hpp
++++ b/lib/Red/TypeInfo/Definition.hpp
+@@ -509,11 +509,8 @@ public:
+         if (name != aAlias)
+         {
+             auto rtti = CRTTISystem::Get();
+-            if (rtti->scriptToNative.Get(aAlias) == nullptr)
+-            {
+-                rtti->scriptToNative.Insert(aAlias, name);
+-                rtti->nativeToScript.Insert(name, aAlias);
+-            }
++            rtti->scriptToNative.InsertOrAssign(aAlias, name);
++            rtti->nativeToScript.InsertOrAssign(name, aAlias);
+         }
+     }
+ 
+@@ -530,19 +527,22 @@ public:
+     {
+         auto* ptr = reinterpret_cast<ScriptingFunction_t<TRet*>>(aFunc);
+ 
+-        CClassFunction* func;
+         if constexpr (std::is_same_v<TContext, IScriptable>)
+         {
+-            func = CClassStaticFunction::Create(this, aName, aName, ptr, aFlags);
++            auto func = CClassStaticFunction::Create(this, aName, aName, ptr, aFlags);
++
++            RegisterFunction(func);
++
++            return func;
+         }
+         else
+         {
+-            func = CClassFunction::Create(this, aName, aName, ptr, aFlags);
+-        }
++            auto func = CClassFunction::Create(this, aName, aName, ptr, aFlags);
+ 
+-        RegisterFunction(func);
++            RegisterFunction(func);
+ 
+-        return func;
++            return func;
++        }
+     }
+ 
+     template<auto AFunction>
+@@ -662,6 +662,48 @@ public:
+ 
+         return func;
+     }
++
++    void RegisterFunction(CClassFunction* aFunc)
++    {
++        if (aFunc->flags.isStatic)
++        {
++            auto functionExists = false;
++
++            for (auto& existingFunc : staticFuncs)
++            {
++                if (existingFunc->shortName == aFunc->shortName)
++                {
++                    existingFunc = static_cast<CClassStaticFunction*>(aFunc);
++                    functionExists = true;
++                    break;
++                }
++            }
++
++            if (!functionExists)
++            {
++                staticFuncs.PushBack(static_cast<CClassStaticFunction*>(aFunc));
++            }
++        }
++        else
++        {
++            auto functionExists = false;
++
++            for (auto& existingFunc : funcs)
++            {
++                if (existingFunc->shortName == aFunc->shortName)
++                {
++                    existingFunc = aFunc;
++                    functionExists = true;
++                    break;
++                }
++            }
++
++            if (!functionExists)
++            {
++                funcs.PushBack(aFunc);
++            }
++        }
++    }
+ };
+ 
+ template<typename TClass>
+@@ -939,6 +981,14 @@ struct SystemBuilder
+     static inline void ScriptGetter(Red::IScriptable* aContext, Red::CStackFrame* aFrame,
+                                     Red::Handle<Red::IScriptable>* aRet, int64_t)
+     {
++        constexpr uint8_t ParamEndOp = 38;
++
++        if (*aFrame->code != ParamEndOp)
++        {
++            ScriptGameInstance gameInstance;
++            Red::GetParameter(aFrame, &gameInstance);
++        }
++
+         ++aFrame->code;
+ 
+         if (aRet)
+@@ -969,19 +1019,35 @@ struct SystemBuilder
+         constexpr auto systemTypeStr = GetTypeNameStr<TSystem>();
+         constexpr auto systemNameStr = Detail::UpFirstConstStr<systemTypeStr.size()>(systemTypeStr.data());
+         constexpr auto getterNameStr = Detail::ConcatConstStr<3, systemNameStr.size() - 1>("Get", systemNameStr.data());
++        constexpr auto getterName = Red::CName(getterNameStr.data());
+ 
+         auto gameType = GetClass<ScriptGameInstance>();
+         auto getterFunc = CClassStaticFunction::Create(gameType, getterNameStr.data(), getterNameStr.data(), &ScriptGetter);
+         getterFunc->SetReturnType(CNamePool::Add(systemRefStr.data()));
+ 
+-        gameType->staticFuncs.PushBack(getterFunc);
++        auto getterExists = false;
++
++        for (auto& existingFunc : gameType->staticFuncs)
++        {
++            if (existingFunc->shortName == getterFunc->shortName)
++            {
++                existingFunc = getterFunc;
++                getterExists = true;
++                break;
++            }
++        }
++
++        if (!getterExists)
++        {
++            gameType->staticFuncs.PushBack(getterFunc);
++        }
+     }
+ 
+     static inline void RegisterSystem()
+     {
+         auto engine = CGameEngine::Get();
+ 
+-        if (!engine || !engine->framework)
++        if (!engine || !engine->framework || !engine->framework->gameInstance || !TypeInfoRegistrar::IsMainThread())
+         {
+             TypeInfoRegistrar::AddDescribeCallback(&RegisterSystem);
+             return;
+@@ -1098,6 +1164,12 @@ struct ClassDefinition
+             SystemBuilder<TClass>::RegisterGetter();
+             SystemBuilder<TClass>::RegisterSystem();
+         }
++
++        if (auto alias = rtti->GetClassByScriptName(name))
++        {
++            rtti->scriptToNative.InsertOrAssign(name, name);
++            rtti->nativeToScript.InsertOrAssign(name, name);
++        }
+     }
+ 
+     inline static TypeInfoRegistrar s_registrar{&RegisterType, &DescribeType}; // NOLINT(cert-err58-cpp)
+diff --git a/lib/Red/TypeInfo/Registrar.hpp b/lib/Red/TypeInfo/Registrar.hpp
+index cc6f3c9..5da3b0d 100644
+--- a/lib/Red/TypeInfo/Registrar.hpp
++++ b/lib/Red/TypeInfo/Registrar.hpp
+@@ -15,6 +15,9 @@ public:
+ 
+     static inline void RegisterDiscovered()
+     {
++        // Assumed to be called at plugin bootstrap, on the game's main thread.
++        s_mainThread = GetCurrentThreadId();
++
+         QueuePendingRegisterCallbacks();
+         QueuePendingDescribeCallbacks();
+     }
+@@ -35,6 +38,13 @@ public:
+         }
+     }
+ 
++    static inline bool IsMainThread()
++    {
++        const auto mainThread = s_mainThread.load();
++
++        return mainThread == 0 || mainThread == GetCurrentThreadId();
++    }
++
+ private:
+     static inline void QueuePendingRegisterCallbacks()
+     {
+@@ -84,5 +94,6 @@ private:
+ 
+     static inline std::vector<Callback> s_registerCallbacks;
+     static inline std::vector<Callback> s_describeCallbacks;
++    static inline std::atomic<uint32_t> s_mainThread{0};
+ };
+ }
+diff --git a/src/App/Application.cpp b/src/App/Application.cpp
+index 668e622..60594b3 100644
+--- a/src/App/Application.cpp
++++ b/src/App/Application.cpp
+@@ -1,18 +1,7 @@
+ #include "Application.hpp"
+ #include "App/Archives/ArchiveLoader.hpp"
+ #include "App/Archives/ArchiveWatcher.hpp"
+-#include "App/Archives/ResourceLogger.hpp"
+ #include "App/Environment.hpp"
+-#include "App/Scripts/ObjectRegistry.hpp"
+-#include "App/Scripts/ScriptLoader.hpp"
+-#include "App/Scripts/ScriptLogger.hpp"
+-#include "App/Scripts/ScriptReporter.hpp"
+-#include "App/Scripts/ScriptWatcher.hpp"
+-#include "App/Shared/ResourcePathRegistry.hpp"
+-#include "App/Tweaks/TweakLoader.hpp"
+-#include "App/Tweaks/TweakWatcher.hpp"
+-#include "App/UI/InkWidgetCollector.hpp"
+-#include "App/World/WorldNodeRegistry.hpp"
+ #include "Core/Foundation/RuntimeProvider.hpp"
+ #include "Support/MinHook/MinHookProvider.hpp"
+ #include "Support/RED4ext/RED4extProvider.hpp"
+@@ -30,18 +19,7 @@ App::Application::Application(HMODULE aHandle, const RED4ext::v1::Sdk* aSdk)
+ 
+     Register<App::ArchiveLoader>();
+     Register<App::ArchiveWatcher>(Env::ArchiveHotDir());
+-    Register<App::ResourceLogger>();
+ 
+-    Register<App::ScriptLoader>(Env::ScriptSourceDir(), Env::ScriptBlobPath());
+-    Register<App::ScriptWatcher>(Env::ScriptHotFile());
+-    Register<App::ScriptLogger>();
+-    Register<App::ScriptReporter>(Env::IsPrePatch212a());
+-    Register<App::ObjectRegistry>();
+-
+-    Register<App::TweakLoader>(Env::TweakSourceDir());
+-    Register<App::TweakWatcher>(Env::TweakHotFile());
+-
+-    Register<App::ResourcePathRegistry>(Env::KnownHashesPath());
+-    Register<App::WorldNodeRegistry>();
+-    Register<App::InkWidgetCollector>(Env::IsPrePatch212a());
++    // Archives-only build for patch 2.5: the resource logger, script/tweak reload, object registry,
++    // world inspector and ink inspector read engine layouts that 2.5 changed and are not ported.
+ }
+diff --git a/src/App/Archives/ArchiveLoader.cpp b/src/App/Archives/ArchiveLoader.cpp
+index 38d84c6..b1863b8 100644
+--- a/src/App/Archives/ArchiveLoader.cpp
++++ b/src/App/Archives/ArchiveLoader.cpp
+@@ -232,7 +232,7 @@ void App::ArchiveLoader::LoadModArchives(const Red::DynArray<Red::ArchiveGroup*>
+     }
+ 
+     Red::ArchiveGroup hotGroup;
+-    Raw::ResourceDepot::LoadArchives(nullptr, hotGroup, aArchivePaths, aLoadedResources, false);
++    Raw::ResourceDepot::LoadArchives(nullptr, hotGroup, aArchivePaths, aLoadedResources, 0, 2);
+ 
+     for (const auto& archive : hotGroup.archives)
+     {
+@@ -264,6 +264,15 @@ void App::ArchiveLoader::LoadModArchives(const Red::DynArray<Red::ArchiveGroup*>
+ Red::Archive* App::ArchiveLoader::FindArchivePosition(Red::DynArray<Red::Archive>& aArchives,
+                                                       const Red::CString& aArchivePath)
+ {
++    // The game keeps the mod archives in case-insensitive order, not strcmp order, so the binary search
++    // below can miss a mounted archive; its handle is then never reopened and the game quits with
++    // "error 1". Look for the exact path first (same change as upstream issue #20).
++    for (auto& archive : aArchives)
++    {
++        if (archive.path == aArchivePath)
++            return &archive;
++    }
++
+     return std::lower_bound(aArchives.Begin(), aArchives.End(), aArchivePath,
+                             [](const Red::Archive& aArchive, const Red::CString& aPath) {
+                                 return strcmp(aArchive.path.c_str(), aPath.c_str()) < 0;
+diff --git a/src/App/Facade.cpp b/src/App/Facade.cpp
+index 93c3221..1a39e2a 100644
+--- a/src/App/Facade.cpp
++++ b/src/App/Facade.cpp
+@@ -1,8 +1,6 @@
+ #include "Facade.hpp"
+ #include "App/Archives/ArchiveLoader.hpp"
+ #include "App/Environment.hpp"
+-#include "App/Scripts/ObjectRegistry.hpp"
+-#include "App/Scripts/ScriptLoader.hpp"
+ #include "App/Shared/ResourcePathRegistry.hpp"
+ #include "Core/Facades/Container.hpp"
+ #include "Red/Scripting.hpp"
+@@ -24,7 +22,7 @@ void App::Facade::ReloadResources(const Red::DynArray<Red::ResourcePath>& aPaths
+ 
+ void App::Facade::ReloadScripts()
+ {
+-    Core::Resolve<ScriptLoader>()->ReloadScripts();
++    // not available in the archives-only build
+ }
+ 
+ void App::Facade::ReloadTweaks()
+@@ -103,7 +101,8 @@ Red::DynArray<Red::CName> App::Facade::GetEntityVisualTags(const Red::WeakHandle
+ 
+ Red::CString App::Facade::GetResourcePath(uint64_t aResourceHash)
+ {
+-    auto path = Core::Resolve<ResourcePathRegistry>()->ResolvePath(aResourceHash);
++    auto registry = Core::Resolve<ResourcePathRegistry>();
++    auto path = registry ? registry->ResolvePath(aResourceHash) : std::string{};
+ 
+     if (path.empty())
+     {
+@@ -128,7 +127,8 @@ Red::CString App::Facade::GetReferencePath(const Red::Handle<Red::ISerializable>
+     if (!hash)
+         return {};
+ 
+-    auto path = Core::Resolve<ResourcePathRegistry>()->ResolvePath(hash);
++    auto registry = Core::Resolve<ResourcePathRegistry>();
++    auto path = registry ? registry->ResolvePath(hash) : std::string{};
+ 
+     if (path.empty())
+     {
+@@ -156,7 +156,7 @@ Red::CName App::Facade::GetComponentAppearanceDefinition(const Red::Handle<Red::
+ Red::DynArray<Red::WeakHandle<Red::ISerializable>> App::Facade::GetAllHandles()
+ {
+     Red::DynArray<Red::WeakHandle<Red::ISerializable>> result;
+-    Core::Resolve<ObjectRegistry>()->CollectSerializables(result);
++    // the object registry is not part of the archives-only build
+ 
+     return result;
+ }
+diff --git a/src/Red/Addresses/Library.hpp b/src/Red/Addresses/Library.hpp
+index 0262106..5480020 100644
+--- a/src/Red/Addresses/Library.hpp
++++ b/src/Red/Addresses/Library.hpp
+@@ -89,7 +89,7 @@ constexpr uint32_t RenderProxy_UpdateVisibility = 2124419179;
+ 
+ constexpr uint32_t ResourceBank_ForgetResource = 2288918343;
+ 
+-constexpr uint32_t ResourceDepot_LoadArchives = 2517385486;
++constexpr uint32_t ResourceDepot_LoadArchives = 3573367139; // patch 2.5 (int32 mode, uint8 fail severity)
+ constexpr uint32_t ResourceDepot_DestructArchive = 1988169744;
+ constexpr uint32_t ResourceDepot_DestructArchives = 3517657864;
+ constexpr uint32_t ResourceDepot_RequestResource = 2450934495;
+diff --git a/src/Red/ResourceDepot.hpp b/src/Red/ResourceDepot.hpp
+index 855cd0e..3c15019 100644
+--- a/src/Red/ResourceDepot.hpp
++++ b/src/Red/ResourceDepot.hpp
+@@ -8,7 +8,8 @@ constexpr auto LoadArchives = Core::RawFunc<
+                           Red::ArchiveGroup& aGroup,
+                           const Red::DynArray<Red::CString>& aArchivePaths,
+                           Red::DynArray<Red::ResourcePath>& aLoadedResourcePaths,
+-                          bool aMemoryResident)>{};
++                          int32_t aMode,
++                          uint8_t aFailSeverity)>{};
+ 
+ constexpr auto DestructArchive = Core::RawFunc<
+     /* addr = */ Red::AddressLib::ResourceDepot_DestructArchive,
+diff --git a/src/pch.hpp b/src/pch.hpp
+index 10ac32c..f6313f7 100644
+--- a/src/pch.hpp
++++ b/src/pch.hpp
+@@ -1,6 +1,7 @@
+ #pragma once
+ 
+ #include <algorithm>
++#include <atomic>
+ #include <concepts>
+ #include <cstdint>
+ #include <filesystem>
+@@ -151,7 +152,6 @@
+ #include <RED4ext/Scripting/Natives/Generated/world/RoadProxyMeshNode.hpp>
+ #include <RED4ext/Scripting/Natives/Generated/world/RuntimeSystemNodeStreaming.hpp>
+ #include <RED4ext/Scripting/Natives/Generated/world/RuntimeSystemPhysics.hpp>
+-#include <RED4ext/Scripting/Natives/Generated/world/SharedDataBuffer.hpp>
+ #include <RED4ext/Scripting/Natives/Generated/world/SocketNode.hpp>
+ #include <RED4ext/Scripting/Natives/Generated/world/StaticDecalNode.hpp>
+ #include <RED4ext/Scripting/Natives/Generated/world/StaticDecalNodeInstance.hpp>
+diff --git a/xmake.lua b/xmake.lua
+index a846dd2..152cf00 100644
+--- a/xmake.lua
++++ b/xmake.lua
+@@ -30,13 +30,17 @@ else
+ end
+ 
+ add_requires("fmt", "hopscotch-map", "minhook", "spdlog", "tiltedcore")
++add_requireconfs("tiltedcore.mimalloc", {version = "2.x", override = true}) -- mimalloc 3.x dropped mi_malloc_size used by TiltedCore
+ 
+ target("RedHotTools")
+     set_default(true)
+     set_kind("shared")
+     set_filename("RedHotTools.dll")
+     set_pcxxheader("src/pch.hpp")
+-    add_files("src/**.cpp", "src/**.rc", "lib/**.cpp")
++    -- archives-only build: the modules Application no longer registers stay out (world and ink inspectors don't
++    -- compile against the 2.5 SDK; script reload needs two address constants rc.3 lacks)
++    add_files("src/**.cpp|App/Scripts/**.cpp|App/World/**.cpp|App/UI/**.cpp|App/Tweaks/**.cpp|App/Archives/ResourceLogger*.cpp|Red/EngineConfig.cpp",
++              "src/**.rc", "lib/**.cpp")
+     add_headerfiles("src/**.hpp", "lib/**.hpp", "vendor/filewatch/**.hpp")
+     add_includedirs("src/", "lib/", "vendor/filewatch/")
+     add_deps("RED4ext.SDK", "nameof", "semver", "wil")
